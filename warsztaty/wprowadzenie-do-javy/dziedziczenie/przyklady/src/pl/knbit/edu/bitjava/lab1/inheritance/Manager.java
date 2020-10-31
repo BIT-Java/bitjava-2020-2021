@@ -17,4 +17,9 @@ public class Manager extends Employee {
         this.bonus = bonus;
     }
 
+    @Override
+    public String toString() {
+        return "I'm manager";
+    }
+
 }
