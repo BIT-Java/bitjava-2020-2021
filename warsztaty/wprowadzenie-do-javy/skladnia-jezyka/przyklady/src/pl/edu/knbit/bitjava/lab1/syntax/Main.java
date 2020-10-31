@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
 
         // typy podstawowe:
-        int a = 1;
+        final int a = 1;
         short b = 1;
         long c = 174921;
         byte d = 24;
@@ -174,7 +174,10 @@ public class Main {
         switch (direction) {
             case NORTH -> System.out.println("N");
             case EAST -> System.out.println("E");
-            case WEST -> System.out.println("W");
+            case WEST -> {
+                System.out.println("W");
+                System.out.println("W");
+            }
             case SOUTH -> System.out.println("S");
         }
 
@@ -207,7 +210,7 @@ public class Main {
 
         // 0 0 0
         // 0 0 0
-        int[][] tab4 = new int[2][3];
+        int[][][] tab4 = new int[2][3][9];
         int[][] tab5 = {{1, 2, 3}, {4, 5, 6}};
 
         int v2 = tab5[1][1];

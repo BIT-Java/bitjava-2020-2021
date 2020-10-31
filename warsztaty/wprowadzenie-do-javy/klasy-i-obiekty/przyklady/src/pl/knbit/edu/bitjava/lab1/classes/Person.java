@@ -20,10 +20,16 @@ public class Person {
 
     }
 
-    // konstruktor z parametrami
+    // konstruktor z parametrami:
     public Person(String name, String surname) {
         this.name = name;
         this.surname = surname;
+    }
+
+    // przeciążanie konstruktora:
+    public Person(String name, Gender gender) {
+        this.name = name;
+        this.gender = gender;
     }
 
     // metody klasy:
