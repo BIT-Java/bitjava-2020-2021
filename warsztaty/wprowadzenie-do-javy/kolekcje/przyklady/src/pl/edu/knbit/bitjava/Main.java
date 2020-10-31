@@ -40,6 +40,8 @@ public class Main {
 //            System.out.println(student1);
 //        }
 
+//        Collections.sort(list, new StudentAgeComparator());
+
         Collections.sort(list, Collections.reverseOrder());
         for (Student student1 : list) {
             System.out.println(student1);
