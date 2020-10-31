@@ -45,6 +45,10 @@ public class Main {
             System.out.println(student1);
         }
 
+        TreeSet<Student> studentTreeSet = new TreeSet<>(new StudentAgeComparator());
+        studentTreeSet.add(new Student("Jan", "Nowak", 12));
+        studentTreeSet.add(new Student("Janina", "Nowak", 12));
+
     }
 
     private static void apply(Collection<Student> collection) {
