@@ -1,9 +1,12 @@
-package pl.edu.knbit.bitjava.services;
+package pl.edu.knbit.bitjava.rozwiazania.services;
 
-import pl.edu.knbit.bitjava.model.Course;
-import pl.edu.knbit.bitjava.model.Student;
 
-import java.util.*;
+
+import pl.edu.knbit.bitjava.rozwiazania.model.Course;
+import pl.edu.knbit.bitjava.rozwiazania.model.Student;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by surja on 31.10.2020
