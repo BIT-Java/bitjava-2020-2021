@@ -1,4 +1,4 @@
-#Zadanie-Collections
+# Zadanie-Collections
 W tym zadaniu zasymulujemy działanie koszyka sklepowego na stronie internetowej.
 Punkty do wykonania:
 - Stworzenie interface'u `Product` który udostępnia metodę do pobrania ceny Produktu oraz metodę do pobrania nazwy Produktu.
