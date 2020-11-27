@@ -1,4 +1,4 @@
-package pl.edu.knbit.bitjava.shop.model;
+package pl.edu.knbit.bitjava.shop.domain.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

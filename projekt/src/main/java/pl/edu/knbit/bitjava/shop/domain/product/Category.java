@@ -1,4 +1,4 @@
-package pl.edu.knbit.bitjava.shop.model;
+package pl.edu.knbit.bitjava.shop.domain.product;
 
 /**
  * Created by surja on 23.11.2020
