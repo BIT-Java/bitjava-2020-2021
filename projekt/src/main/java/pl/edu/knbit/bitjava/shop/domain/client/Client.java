@@ -1,7 +1,6 @@
 package pl.edu.knbit.bitjava.shop.domain.client;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.edu.knbit.bitjava.shop.domain.invoice.Invoice;
 
 import javax.persistence.*;
@@ -9,10 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "CLIENTS")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "CLIENTS")
 public class Client {
 
     @Id

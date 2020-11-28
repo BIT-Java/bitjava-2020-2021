@@ -1,9 +1,6 @@
 package pl.edu.knbit.bitjava.shop.domain.invoice;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.edu.knbit.bitjava.shop.domain.client.Client;
 
 import javax.persistence.*;
@@ -11,11 +8,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-@Data
-@Builder
+@Getter
+@Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "INVOICES")
-
 public class Invoice {
 
     @Id

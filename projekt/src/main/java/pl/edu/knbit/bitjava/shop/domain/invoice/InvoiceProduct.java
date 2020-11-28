@@ -8,8 +8,10 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Builder
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "INVOICE_PRODUCTS")
 public class InvoiceProduct {
 
