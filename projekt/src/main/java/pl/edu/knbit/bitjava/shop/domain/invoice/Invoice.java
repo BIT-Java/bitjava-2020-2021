@@ -15,6 +15,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "INVOICES")
+
 public class Invoice {
 
     @Id
@@ -32,9 +33,5 @@ public class Invoice {
 
     @OneToMany(mappedBy = "invoice")
     private List<InvoiceProduct> products;
-
-    public Invoice() {
-
-    }
 
 }

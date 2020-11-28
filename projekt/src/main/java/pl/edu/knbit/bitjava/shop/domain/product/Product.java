@@ -1,9 +1,6 @@
 package pl.edu.knbit.bitjava.shop.domain.product;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -11,8 +8,10 @@ import java.util.UUID;
 /**
  * Created by surja on 23.11.2020
  */
+
+@Getter
+@Setter
 @Entity
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
