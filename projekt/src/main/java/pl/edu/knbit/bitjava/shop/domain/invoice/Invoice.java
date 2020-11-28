@@ -1,7 +1,9 @@
 package pl.edu.knbit.bitjava.shop.domain.invoice;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import pl.edu.knbit.bitjava.shop.domain.client.Client;
 
 import javax.persistence.*;
@@ -10,9 +12,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@Builder
 @Entity
 @Table(name = "INVOICES")
-@RequiredArgsConstructor
 public class Invoice {
 
     @Id
@@ -23,7 +25,7 @@ public class Invoice {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    private Instant timeCreated;
+    private Instant timeCreated = Instant.now();
 
     @Enumerated(EnumType.STRING)
     private InvoiceType invoiceType;
@@ -31,9 +33,8 @@ public class Invoice {
     @OneToMany(mappedBy = "invoice")
     private List<InvoiceProduct> products;
 
-    public Invoice(InvoiceType invoiceType, List<InvoiceProduct> products) {
-        this.invoiceType = invoiceType;
-        this.products = products;
+    public Invoice() {
+
     }
 
 }

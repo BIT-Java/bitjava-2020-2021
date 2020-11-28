@@ -3,7 +3,7 @@ package pl.edu.knbit.bitjava.shop.api.invoice;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.knbit.bitjava.shop.commom.exception.NotFoundException;
 import pl.edu.knbit.bitjava.shop.domain.client.Client;
@@ -12,6 +12,8 @@ import pl.edu.knbit.bitjava.shop.domain.invoice.Invoice;
 import pl.edu.knbit.bitjava.shop.domain.invoice.InvoiceProduct;
 import pl.edu.knbit.bitjava.shop.domain.invoice.InvoiceStorage;
 import pl.edu.knbit.bitjava.shop.domain.invoice.InvoiceType;
+import pl.edu.knbit.bitjava.shop.domain.product.Product;
+import pl.edu.knbit.bitjava.shop.domain.product.ProductStorage;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,6 +29,7 @@ public class InvoiceController {
 
     private final InvoiceStorage invoiceStorage;
     private final ClientStorage clientStorage;
+    private final ProductStorage productStorage;
 
     @GetMapping
     public List<InvoiceResponse> findAll(@PathVariable UUID clientId) {
@@ -41,15 +44,33 @@ public class InvoiceController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public InvoiceResponse createInvoice(@PathVariable UUID clientId,
-                                                 @RequestBody @Valid CreateInvoiceRequest request) {
+                                         @RequestBody @Valid CreateInvoiceRequest request) {
 
         final Client client = clientStorage
                 .findById(clientId)
                 .orElseThrow(() -> new NotFoundException("Client with given ID does not exist"));
 
-        final Invoice invoice = request.toInvoice();
-        invoice.setClient(client);
+        final Invoice invoice = Invoice.builder()
+                .invoiceType(request.getType())
+                .timeCreated(Instant.now())
+                .client(client)
+                .products(request.getProducts()
+                        .stream()
+                        .map(p -> {
+                                    Product product = productStorage
+                                            .findById(p.getId())
+                                            .orElseThrow(() -> new NotFoundException("Product with given ID does not exist"));
+
+                                    return InvoiceProduct.builder()
+                                            .product(product)
+                                            .amount(p.getAmount())
+                                            .build();
+                                }
+                        )
+                        .collect(Collectors.toList()))
+                .build();
 
         return InvoiceResponse.fromInvoice(invoiceStorage.createOrUpdate(invoice));
     }
@@ -101,11 +122,21 @@ public class InvoiceController {
         private final InvoiceType type;
 
         @NotNull
-        private final List<InvoiceProduct> products;
+        private final List<CreateInvoiceProduct> products;
 
         Invoice toInvoice() {
-            return new Invoice(type, products);
+            return Invoice.builder()
+                    .invoiceType(type)
+                    .build();
         }
+
+    }
+
+    @Data
+    static class CreateInvoiceProduct {
+
+        private final UUID id;
+        private final Long amount;
 
     }
 

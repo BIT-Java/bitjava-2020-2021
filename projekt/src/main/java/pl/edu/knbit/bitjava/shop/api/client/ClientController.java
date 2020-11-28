@@ -43,7 +43,8 @@ public class ClientController {
     }
 
     @PostMapping
-    public ClientResponse addClient(@RequestBody @Valid CreateClientRequest request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ClientResponse createClient(@RequestBody @Valid CreateClientRequest request) {
         final Client newClient = clientStorage.createOrUpdateClient(request.toClient());
 
         return ClientResponse.fromClient(newClient);
