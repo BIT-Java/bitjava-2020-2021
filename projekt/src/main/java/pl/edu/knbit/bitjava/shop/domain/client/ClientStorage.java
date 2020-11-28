@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.knbit.bitjava.shop.commom.exception.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -17,10 +18,8 @@ public class ClientStorage {
         return clientRepository.findAll();
     }
 
-    public Client findById(UUID id) {
-        return clientRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("Client with given ID does not exist"));
+    public Optional<Client> findById(UUID id) {
+        return clientRepository.findById(id);
     }
 
     public List<Client> findByCity(String city) {

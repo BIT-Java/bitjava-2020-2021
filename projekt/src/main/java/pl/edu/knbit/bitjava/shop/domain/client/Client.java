@@ -1,10 +1,12 @@
 package pl.edu.knbit.bitjava.shop.domain.client;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.edu.knbit.bitjava.shop.domain.invoice.Invoice;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -12,13 +14,6 @@ import java.util.UUID;
 @Table(name = "CLIENTS")
 @NoArgsConstructor
 public class Client {
-
-    public Client(String firstName, String lastName, String email, Address address) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.address = address;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,5 +27,15 @@ public class Client {
 
     @Embedded
     private Address address;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    private List<Invoice> invoices = new ArrayList<>();
+
+    public Client(String firstName, String lastName, String email, Address address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.address = address;
+    }
 
 }

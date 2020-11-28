@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * Created by surja on 23.11.2020
@@ -16,11 +17,18 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private ProductCategory productCategory;
+
+    public Product(String name, ProductCategory productCategory) {
+        this.name = name;
+        this.productCategory = productCategory;
+    }
+
 }
