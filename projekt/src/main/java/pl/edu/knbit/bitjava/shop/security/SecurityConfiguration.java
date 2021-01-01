@@ -32,7 +32,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() //todo
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/clients").permitAll()
+                .antMatchers(HttpMethod.GET, "/clients").hasAuthority("ROLE_CLIENT")
+                .antMatchers("/clients").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
@@ -42,7 +43,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     protected UserDetailsService userDetailsService() {
-        UserDetails user = User.builder().username("ala").password(passwordEncoder.encode("ala123")).authorities("CLIENT").build();
-        return new InMemoryUserDetailsManager(user);
+        UserDetails user = User.builder().username("ala").password(passwordEncoder.encode("ala123")).roles("CLIENT").build();
+        UserDetails admin = User.builder().username("ola").password(passwordEncoder.encode("ala123")).roles("ADMIN", "CLIENT").build();
+
+        return new InMemoryUserDetailsManager(user, admin);
     }
 }
