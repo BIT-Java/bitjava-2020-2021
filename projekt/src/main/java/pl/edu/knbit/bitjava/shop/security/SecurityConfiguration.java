@@ -3,15 +3,13 @@ package pl.edu.knbit.bitjava.shop.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import pl.edu.knbit.bitjava.shop.domain.client.ClientStorage;
 
 /**
  * Created by surjak on 01.01.2021
@@ -21,9 +19,11 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
+    private final ClientStorage clientStorage;
 
-    public SecurityConfiguration(PasswordEncoder passwordEncoder) {
+    public SecurityConfiguration(PasswordEncoder passwordEncoder, ClientStorage clientStorage) {
         this.passwordEncoder = passwordEncoder;
+        this.clientStorage = clientStorage;
     }
 
 
@@ -32,20 +32,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() //todo
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/clients").hasAuthority("ROLE_CLIENT")
-                .antMatchers("/clients").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST, "/clients").permitAll()
+                .antMatchers("/clients").hasAuthority("CLIENT")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
         ;
     }
 
-    @Bean
     @Override
-    protected UserDetailsService userDetailsService() {
-        UserDetails user = User.builder().username("ala").password(passwordEncoder.encode("ala123")).roles("CLIENT").build();
-        UserDetails admin = User.builder().username("ola").password(passwordEncoder.encode("ala123")).roles("ADMIN", "CLIENT").build();
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
 
-        return new InMemoryUserDetailsManager(user, admin);
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        daoAuthenticationProvider.setUserDetailsService(clientStorage);
+        return daoAuthenticationProvider;
     }
 }
