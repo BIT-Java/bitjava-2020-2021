@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import pl.edu.knbit.bitjava.shop.domain.client.ClientStorage;
 
 /**
@@ -30,8 +31,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable() //todo
+//                .csrf().disable() //todo
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/clients").permitAll()
                 .antMatchers(HttpMethod.POST, "/clients").permitAll()
                 .antMatchers("/clients").hasAuthority("CLIENT")
                 .anyRequest().authenticated()
