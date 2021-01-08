@@ -9,7 +9,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
+import pl.edu.knbit.bitjava.shop.domain.client.Client;
 import pl.edu.knbit.bitjava.shop.domain.client.ClientStorage;
 
 import javax.servlet.FilterChain;
@@ -48,9 +50,10 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             Claims jwsBody = claimsJws.getBody();
             String username = jwsBody.getSubject();
 
-            Collection<? extends GrantedAuthority> grantedAuthorities = clientStorage.loadUserByUsername(username).getAuthorities();
+            Client client = (Client) clientStorage.loadUserByUsername(username);
+            Collection<? extends GrantedAuthority> grantedAuthorities = client.getAuthorities();
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, grantedAuthorities);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(client, null, grantedAuthorities);
             SecurityContextHolder.getContext().setAuthentication(authentication); //stores for current thread
         }catch (JwtException e){
             throw new IllegalStateException("Token cannnot be trusted" + token);

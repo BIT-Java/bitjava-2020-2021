@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import pl.edu.knbit.bitjava.shop.domain.client.ClientStorage;
+import pl.edu.knbit.bitjava.shop.security.jwt.InvoiceFilter;
 import pl.edu.knbit.bitjava.shop.security.jwt.JwtAuthenticationFilter;
 import pl.edu.knbit.bitjava.shop.security.jwt.JwtTokenVerifier;
 
@@ -39,6 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilterAfter(new JwtTokenVerifier(clientStorage), JwtAuthenticationFilter.class)
+                .addFilterAfter(new InvoiceFilter(), JwtTokenVerifier.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/clients").permitAll()
                 .antMatchers("/clients").hasAuthority("CLIENT")

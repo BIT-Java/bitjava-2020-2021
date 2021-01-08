@@ -91,7 +91,7 @@ public class ClientController {
                     .id(client.getId())
                     .firstName(client.getFirstName())
                     .lastName(client.getLastName())
-                    .email(client.getLastName())
+                    .email(client.getEmail())
                     .address(client.getAddress())
                     .invoices((long) client.getInvoices().size())
                     .password(client.getPassword())
