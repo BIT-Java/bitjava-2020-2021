@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+
+server:
+  port: 8081
+
+security:
+  oauth2:
+    client:
+      client-id: CLIENT_ID_HERE
+      client-secret: CLIENT_SECRET_HERE
+    resource:
+      user-info-uri: https://api.spotify.com/v1/me
+      token-info-uri: https://accounts.spotify.com/api/token
+      prefer-token-info: false
