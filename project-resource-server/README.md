@@ -69,3 +69,14 @@ You have to also add header:
 `Authorization`: `Basic <BASE_64_ENCODED client_id:client_secret>`
 
 Example header value: `Basic YjkwODE3MzI2MjA5NGQyZGIxZGIxNDhmYzk0YmU2YzI6YWIyNjNiOWZmZDEzNDFiODk2NjJkMDhiMzIyMWExOWE=`
+
+## Useful links:
+
+Spotify Dashboard:
+https://developer.spotify.com/dashboard/
+
+Spotify Authorization Guide:
+https://developer.spotify.com/documentation/general/guides/authorization-guide/
+
+Spring boot docs for oAuth2:
+https://docs.spring.io/spring-security-oauth2-boot/docs/2.0.0.RC2/reference/htmlsingle/
