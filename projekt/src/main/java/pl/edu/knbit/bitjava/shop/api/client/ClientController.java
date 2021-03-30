@@ -5,15 +5,18 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.knbit.bitjava.shop.commom.exception.NotFoundException;
 import pl.edu.knbit.bitjava.shop.domain.client.Address;
 import pl.edu.knbit.bitjava.shop.domain.client.Client;
 import pl.edu.knbit.bitjava.shop.domain.client.ClientStorage;
+import pl.edu.knbit.bitjava.shop.domain.client.UserGrantedAuthority;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -80,15 +83,19 @@ public class ClientController {
         private String email;
         private Address address;
         private Long invoices;
+        private String password;
+        private Collection<UserGrantedAuthority> grantedAuthorities;
 
         static ClientResponse fromClient(Client client) {
             return ClientResponse.builder()
                     .id(client.getId())
                     .firstName(client.getFirstName())
                     .lastName(client.getLastName())
-                    .email(client.getLastName())
+                    .email(client.getEmail())
                     .address(client.getAddress())
                     .invoices((long) client.getInvoices().size())
+                    .password(client.getPassword())
+                    .grantedAuthorities(client.getGrantedAuthorities())
                     .build();
         }
 
@@ -110,12 +117,16 @@ public class ClientController {
         @NotNull
         private Address address;
 
+        private String password;
+
         Client toClient() {
             return new Client(
                     this.firstName,
                     this.lastName,
                     this.email,
-                    this.address
+                    this.address,
+                    this.password,
+                    java.util.List.of("CLIENT")
             );
         }
 
